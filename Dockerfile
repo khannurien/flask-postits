@@ -19,21 +19,28 @@ RUN set -xe \
         python3-minimal \
         python3-wheel \
         python3-pip \
-        gunicorn3 \
+        uwsgi-plugin-python3 \
  && python3 -m pip install *.whl \
- && apt-get remove -y python3-pip python3-wheel \
- && apt-get autoremove -y \
+# && apt-get remove -y python3-pip python3-wheel \
+# && apt-get autoremove -y \
  && apt-get clean -y \
  && rm -f *.whl \
  && rm -rf /root/.cache \
  && rm -rf /var/lib/apt/lists/* \
  && mkdir -p /app \
- && useradd _gunicorn --no-create-home --user-group
+ && useradd _uwsgi --no-create-home --user-group
 
-USER _gunicorn
-ADD static /app/static
-WORKDIR /app
+USER _uwsgi
 
-CMD ["gunicorn3", \
-     "--bind", "0.0.0.0:8000", \
-     "flask_postits:app"]
+ADD --chown=_uwsgi:_uwsgi static /app/static
+ADD --chown=_uwsgi:_uwsgi db /app/db
+
+ENTRYPOINT ["/usr/bin/uwsgi", \
+            "--master", \
+            "--die-on-term", \
+            "--plugin", "python3"]
+CMD ["--http-socket", "0.0.0.0:8000", \
+     "--processes", "4", \
+     "--chdir", "/app", \
+     "--check-static", "static", \
+     "--module", "flask_postits.app:app"]

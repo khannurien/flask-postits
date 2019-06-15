@@ -12,9 +12,9 @@ from flask_paginate import Pagination, get_page_parameter
 import sqlalchemy
 from sqlalchemy import Table, Column, Integer, Numeric, Text, Time, DateTime, ForeignKey
 
-from config import app, db, login_manager, cfg
-from model import Base, User, Postit
-from form import LoginForm, NewPostitForm
+from flask_postits.config import app, db, login_manager, cfg
+from flask_postits.model import Base, User, Postit
+from flask_postits.form import LoginForm, NewPostitForm
 
 # callbacks
 @login_manager.user_loader
