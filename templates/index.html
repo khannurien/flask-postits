@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="card-deck w-100">
+    {% for postit in postits %}
+      <div class="card">
+        <a target="_blank" href="{{ postit.postit_url }}"></a>
+        <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
+          {{ postit.postit_content }}
+        </div>
+        <div class="card-footer text-muted">
+          <small>
+            collé par {{ postit.user }}
+          </small>
+          <div class="btn-group">
+            {% if postit.user == current_user %}
+              <small>— <a href="{{ url_for('delete', id=postit.postit_id) }}">décoller</a></small>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% if loop.index % 2 == 0 %}
+        <div class="w-100 d-block"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <small class="text-center">
+  {{ pagination.links }}
+  </small>
+ {% endblock %}
