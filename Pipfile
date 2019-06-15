@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pbr = "*"
+black = "*"
 
 [packages]
 sqlalchemy = "*"
@@ -15,7 +16,9 @@ flask-wtf = "*"
 werkzeug = "*"
 flask-paginate = "*"
 pytz = "*"
-whitenoise = "*"
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

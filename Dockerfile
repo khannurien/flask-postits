@@ -21,8 +21,8 @@ RUN set -xe \
         python3-pip \
         uwsgi-plugin-python3 \
  && python3 -m pip install *.whl \
-# && apt-get remove -y python3-pip python3-wheel \
-# && apt-get autoremove -y \
+ && apt-get remove -y python3-pip python3-wheel \
+ && apt-get autoremove -y \
  && apt-get clean -y \
  && rm -f *.whl \
  && rm -rf /root/.cache \
@@ -34,6 +34,8 @@ USER _uwsgi
 
 ADD --chown=_uwsgi:_uwsgi static /app/static
 ADD --chown=_uwsgi:_uwsgi db /app/db
+
+VOLUME ["/app/db"]
 
 ENTRYPOINT ["/usr/bin/uwsgi", \
             "--master", \

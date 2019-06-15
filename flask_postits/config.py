@@ -12,10 +12,12 @@ from flask_postits.model import Base, User, Postit
 
 # Flask
 app = Flask(__name__)
-db_path = os.path.abspath('/app/db/app.db')
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + db_path + '?check_same_thread=False'
+db_path = os.path.abspath("/app/db/app.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    "sqlite:///" + db_path + "?check_same_thread=False"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SECRET_KEY"] = 'blah blah blah'
+app.config["SECRET_KEY"] = "blah blah blah"
 
 # Database
 db = SQLAlchemy(app, metadata=Base.metadata)
@@ -27,7 +29,4 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Parameters
-cfg = {
-	'timezone': pytz.timezone('Europe/Paris'),
-	'per_page': 5,
-}
+cfg = {"timezone": pytz.timezone("Europe/Paris"), "per_page": 5}
