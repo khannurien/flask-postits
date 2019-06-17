@@ -16,6 +16,9 @@ flask-wtf = "*"
 werkzeug = "*"
 flask-paginate = "*"
 pytz = "*"
+extraction = "*"
+lxml = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"

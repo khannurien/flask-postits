@@ -5,8 +5,11 @@
     {% for postit in postits %}
       <div class="card">
         <a target="_blank" href="{{ postit.postit_url }}"></a>
+        <img class="card-img-top" src="{{ postit.postit_image }}" alt="Post-it #{{ postit.postit_id }}" />
         <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
-          {{ postit.postit_content }}
+          <h2 class="card-title">{{ postit.postit_title }}</h2>
+          <p class="card-text"><em>{{ postit.postit_desc }}</em></p>
+          <p class="card-text">{{ postit.postit_content }}</p>
         </div>
         <div class="card-footer text-muted">
           <small>

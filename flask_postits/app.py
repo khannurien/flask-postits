@@ -17,11 +17,13 @@ from flask_postits.config import app, db, login_manager, cfg
 from flask_postits.model import Base, User, Postit
 from flask_postits.form import LoginForm, NewPostitForm
 
+import extraction
+import requests
+
 # callbacks
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.query(User).get(user_id)
-
 
 # routing
 @app.route("/")
@@ -87,8 +89,17 @@ def new():
     form = NewPostitForm()
     if form.validate_on_submit():
         try:
-            postit = Postit(form.url.data, form.content.data)
-            postit.user_id = flask_login.current_user.user_id
+            html = requests.get(form.url.data).text
+            extracted = extraction.Extractor().extract(html, source_url=form.url.data)
+
+            postit = Postit(
+                extracted.url,
+                extracted.title,
+                extracted.description,
+                extracted.image,
+                form.content.data,
+                flask_login.current_user
+            )
             db.session.add(postit)
             db.session.commit()
 

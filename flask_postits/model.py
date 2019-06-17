@@ -84,15 +84,22 @@ class User(Base):
 class Postit(Base):
     __tablename__ = "postits"
 
-    def __init__(self, url, content):
+    def __init__(self, url, title, desc, image, content, user):
         self.postit_color = "#ffffa5"
         self.postit_url = url
+        self.postit_title = title
+        self.postit_desc = desc
+        self.postit_image = image
         self.postit_content = content
         self.postit_date = datetime.datetime.now(pytz.utc)
+        self.user = user
 
     postit_id = Column(Integer, primary_key=True)
     postit_color = Column(Text)
     postit_url = Column(Text)
+    postit_title = Column(Text)
+    postit_desc = Column(Text)
+    postit_image = Column(Text)
     postit_content = Column(Text)
     postit_date = Column(DateTime(timezone=True))
     user_id = Column(Integer, ForeignKey(User.user_id))
@@ -104,6 +111,11 @@ class Postit(Base):
         return session.query(func.count(Postit.postit_id)).scalar()
 
     def __repr__(self):
-        return "<Postit(url = {}, content = {}, user = {})>".format(
-            self.postit_url, self.postit_content, self.user
+        return "<Postit(url = {}, title = {}, desc = {}, image = {}, content = {}, user = {})>".format(
+            self.postit_url,
+            self.postit_title,
+            self.postit_desc,
+            self.postit_image,
+            self.postit_content,
+            self.user,
         )

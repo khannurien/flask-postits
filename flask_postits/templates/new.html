@@ -3,15 +3,16 @@
 {% block content %}
     <h1>Nouveau Post-it</h1>
     <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.url.label }}<br>
+        <div class="form-group">
+            {{ form.hidden_tag() }}
+
+            {{ form.url.label }}
             {{ form.url(size=32) }}
-        </p>
-        <p>
-            {{ form.content.label }}<br>
+
+            {{ form.content.label }}
             {{ form.content(size=32) }}
-        </p>
-        <p>{{ form.submit() }}</p>
+            
+            {{ form.submit() }}
+        </div>
     </form>
 {% endblock %}
