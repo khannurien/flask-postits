@@ -1,31 +1,31 @@
 {% block header %}
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fa fa-sticky-note" aria-hidden="true"></i> Le frigo</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar aria-controls="navbar" aria-expanded="false" aria-label="Basculer">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+		<a class="navbar-brand" href="{{ url_for('index') }}"><i class="fa fa-sticky-note" aria-hidden="true"></i> Le frigo</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar aria-controls="navbar" aria-expanded="false" aria-label="Basculer">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-      <div class="collapse navbar-collapse" id="navbar">
-        <ul class="navbar-nav mr-auto">
-		  {% if current_user.is_authenticated %}
-			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('new') }}">Coller un post-it</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('bin') }}">La corbeille</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
-			</li>
-		  {% else %}
-			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('signup') }}">Inscription</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('login') }}">Connexion</a>
-			</li>
-		  {% endif %}
-        </ul>
-      </div>
-    </nav>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="navbar-nav mr-auto">
+		{% if current_user.is_authenticated %}
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('new') }}">Coller un post-it</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('bin') }}">La corbeille</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+		</li>
+		{% else %}
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('signup') }}">Inscription</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('login') }}">Connexion</a>
+		</li>
+		{% endif %}
+			</ul>
+		</div>
+	</nav>
 {% endblock %}

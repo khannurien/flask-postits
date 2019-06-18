@@ -1,37 +1,37 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <div class="card-deck w-100">
-    {% for postit in postits %}
-      <div class="card">
-        <a target="_blank" href="{{ postit.postit_url }}"></a>
-        <img class="card-img-top" src="{{ postit.postit_image }}" alt="Post-it #{{ postit.postit_id }}" />
-        <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
-          <h2 class="card-title">{{ postit.postit_title }}</h2>
-          <p class="card-text card-desc"><em>{{ postit.postit_desc }}</em></p>
-          <p class="card-text card-content">{{ postit.postit_content }}</p>
-        </div>
-        <div class="card-footer text-muted">
-          {% if current_user.is_authenticated %}
-            <div class="btn-group">
-              <small><a href="{{ url_for('throw', postit_id=postit.postit_id) }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i> décoller</a></small>
+    <div class="card-deck w-100">
+        {% for postit in postits %}
+            <div class="card">
+                <a target="_blank" href="{{ postit.postit_url }}"></a>
+                <img class="card-img-top" src="{{ postit.postit_image }}" alt="Post-it #{{ postit.postit_id }}" />
+                <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
+                    <h2 class="card-title">{{ postit.postit_title }}</h2>
+                    <p class="card-text card-desc"><em>{{ postit.postit_desc }}</em></p>
+                    <p class="card-text card-content">{{ postit.postit_content }}</p>
+                </div>
+                <div class="card-footer text-muted">
+                    {% if current_user.is_authenticated %}
+                        <div class="btn-group">
+                            <small><a href="{{ url_for('throw', postit_id=postit.postit_id) }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i> décoller</a></small>
+                        </div>
+                    {% endif %}
+                    <small>
+                        (collé par {{ postit.user }})
+                    </small>
+                </div>
             </div>
-          {% endif %}
-          <small>
-            (collé par {{ postit.user }})
-          </small>
-        </div>
-      </div>
 
-      {% if loop.index % 2 == 0 %}
-        <div class="w-100 d-block"></div>
-      {% endif %}
-    {% endfor %}
-  </div>
+            {% if loop.index % 2 == 0 %}
+                <div class="w-100 d-block"></div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block footer %}
-  <small class="text-center">
-  {{ pagination.links }}
-  </small>
+    <small class="text-center">
+    {{ pagination.links }}
+    </small>
  {% endblock %}
