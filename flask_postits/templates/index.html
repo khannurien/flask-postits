@@ -12,9 +12,11 @@
           <p class="card-text card-content">{{ postit.postit_content }}</p>
         </div>
         <div class="card-footer text-muted">
-          <div class="btn-group">
-            <small><a href="{{ url_for('throw', postit_id=postit.postit_id) }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i> décoller</a></small>
-          </div>
+          {% if current_user.is_authenticated %}
+            <div class="btn-group">
+              <small><a href="{{ url_for('throw', postit_id=postit.postit_id) }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i> décoller</a></small>
+            </div>
+          {% endif %}
           <small>
             (collé par {{ postit.user }})
           </small>
