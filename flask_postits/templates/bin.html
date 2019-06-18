@@ -9,14 +9,11 @@
         <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
           <h2 class="card-title">{{ postit.postit_title }}</h2>
           <p class="card-text card-desc"><em>{{ postit.postit_desc }}</em></p>
-          <p class="card-text card-content">{{ postit.postit_content }}</p>
+          <p class="card-text card-contentp">{{ postit.postit_content }}</p>
         </div>
         <div class="card-footer text-muted">
-          <div class="btn-group">
-            <small><a href="{{ url_for('throw', postit_id=postit.postit_id) }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i> décoller</a></small>
-          </div>
           <small>
-            (collé par {{ postit.user }})
+            collé par {{ postit.user }}
           </small>
         </div>
       </div>

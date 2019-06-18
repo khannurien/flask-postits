@@ -8,7 +8,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-from flask_postits.model import Base, User, Postit
+from flask_postits.model import Base, User, Postit, ReadBy
 
 # Flask
 app = Flask(__name__)

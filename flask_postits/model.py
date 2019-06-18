@@ -47,12 +47,23 @@ Base = sqlalchemy.ext.declarative.declarative_base(metadata=meta)
 class User(Base):
     __tablename__ = "users"
 
+    def __init__(self, nick, password, name=None):
+        self.user_nick = nick
+        self.password = password
+
+        if not name:
+            self.user_name = nick
+        else:
+            self.user_name = name
+
     user_id = Column(Integer, primary_key=True)
     user_nick = Column(Text)
     user_name = Column(Text)
     user_pass = Column(Text)
 
     postits = relationship("Postit", back_populates="user")
+
+    read_postits = association_proxy('read_by', 'user')
 
     @property
     def password(self):
@@ -106,6 +117,8 @@ class Postit(Base):
 
     user = relationship("User", back_populates="postits")
 
+    read_by = association_proxy('read_by', 'postit')
+
     @staticmethod
     def count(session):
         return session.query(func.count(Postit.postit_id)).scalar()
@@ -119,3 +132,15 @@ class Postit(Base):
             self.postit_content,
             self.user,
         )
+
+class ReadBy(Base):
+    __tablename__ = 'read_by'
+
+    postit_id = Column(Integer, ForeignKey(Postit.postit_id), primary_key=True)
+    user_id = Column(Integer, ForeignKey(User.user_id), primary_key=True)
+
+    postit = relationship('Postit', backref='read_by')
+    user = relationship('User', backref='read_postits')
+
+    def __repr__(self):
+        return '<ReadBy(postit = {}, user = {})>'.format(self.postit, self.user)
