@@ -21,7 +21,6 @@ extraction = "*"
 lxml = "*"
 requests = "*"
 timeago = "*"
-pyembed = "*"
 whitenoise = "*"
 
 [requires]

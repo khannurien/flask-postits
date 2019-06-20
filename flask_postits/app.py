@@ -18,9 +18,6 @@ from config import app, db, login_manager, cfg
 from model import Base, User, Postit, ReadBy
 from form import SignupForm, LoginForm, NewPostitForm
 
-import pyembed
-from pyembed.core import PyEmbed
-
 import datetime
 import extraction
 import requests
@@ -38,15 +35,6 @@ def time_ago(date_ago):
     return timeago.format(
         date_aware, datetime.datetime.now(cfg["timezone"]), cfg["locale"]
     )
-
-
-def get_embed_or_url(url):
-    try:
-        result = PyEmbed.embed(url)
-    except pyembed.core.consumer.PyEmbedConsumerError:
-        result = url
-
-    return result
 
 # routing
 @app.route("/")
@@ -84,8 +72,7 @@ def index():
         title="Frigo | Accueil",
         postits=content,
         pagination=pagination,
-        time_ago=time_ago,
-        get_embed_or_url=get_embed_or_url,
+        time_ago=time_ago
     )
 
 
