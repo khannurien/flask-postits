@@ -80,7 +80,11 @@ div.card>h2 {
 }
 
 div.card>.card-text {
-	font-family: 'Josefin Slab', serif !important;
+	font-family: 'Caveat', cursive !important;
+}
+
+div.card>.card-content {
+	font-family: 'Caveat', cursive !important;
 }
 
 div.card>.card-footer {

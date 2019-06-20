@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 pbr = "*"
 black = "*"
+uwsgi = "*"
 
 [packages]
 sqlalchemy = "*"
@@ -19,6 +20,9 @@ pytz = "*"
 extraction = "*"
 lxml = "*"
 requests = "*"
+timeago = "*"
+pyembed = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.6"

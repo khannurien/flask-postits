@@ -8,16 +8,19 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-from flask_postits.model import Base, User, Postit, ReadBy
+from model import Base, User, Postit, ReadBy
+
+from whitenoise import WhiteNoise
 
 # Flask
 app = Flask(__name__)
-db_path = os.path.abspath("/app/db/app.db")
+db_path = os.path.abspath("db/app.db")
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     "sqlite:///" + db_path + "?check_same_thread=False"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "blah blah blah"
+app.wsgi_app = WhiteNoise(app.wsgi_app, root='static/')
 
 # Database
 db = SQLAlchemy(app, metadata=Base.metadata)
@@ -29,4 +32,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Parameters
-cfg = {"timezone": pytz.timezone("Europe/Paris"), "per_page": 5}
+cfg = {
+    "locale": "fr",
+    "timezone": pytz.timezone("Europe/Paris"),
+    "per_page": 5
+}

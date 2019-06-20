@@ -9,6 +9,11 @@
                 <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
                     <h2 class="card-title">{{ postit.postit_title }}</h2>
                     <p class="card-text card-desc"><em>{{ postit.postit_desc }}</em></p>
+                    <div class="row">
+                        <div class="col"><hr></div>
+                        <div class="col-auto p-1">♾</div>
+                        <div class="col"><hr></div>
+                    </div>
                     <p class="card-text card-content">{{ postit.postit_content }}</p>
                 </div>
                 <div class="card-footer text-muted">
@@ -18,7 +23,7 @@
                         </div>
                     {% endif %}
                     <small>
-                        (collé par {{ postit.user }})
+                        (collé {{ time_ago(postit.postit_date) }} par {{ postit.user }})
                     </small>
                 </div>
             </div>

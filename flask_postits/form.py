@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, EqualTo, URL
+from wtforms.validators import DataRequired, EqualTo, Length, URL
 
 
 class LoginForm(FlaskForm):
@@ -17,5 +17,5 @@ class SignupForm(FlaskForm):
 
 class NewPostitForm(FlaskForm):
     url = StringField("URL", validators=[DataRequired(), URL()])
-    content = StringField("Petit mot", validators=[DataRequired()])
+    content = StringField("Petit mot", validators=[DataRequired(), Length(max=240)])
     submit = SubmitField("Envoyer")

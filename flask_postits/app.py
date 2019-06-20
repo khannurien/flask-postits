@@ -14,17 +14,39 @@ from sqlalchemy import Table, Column, Integer, Numeric, Text, Time, DateTime, Fo
 from sqlalchemy import desc, and_
 from sqlalchemy.orm.properties import ColumnProperty
 
-from flask_postits.config import app, db, login_manager, cfg
-from flask_postits.model import Base, User, Postit, ReadBy
-from flask_postits.form import SignupForm, LoginForm, NewPostitForm
+from config import app, db, login_manager, cfg
+from model import Base, User, Postit, ReadBy
+from form import SignupForm, LoginForm, NewPostitForm
 
+import pyembed
+from pyembed.core import PyEmbed
+
+import datetime
 import extraction
 import requests
+import timeago
 
 # callbacks
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.query(User).get(user_id)
+
+
+def time_ago(date_ago):
+    date_aware = date_ago.astimezone(cfg["timezone"])
+
+    return timeago.format(
+        date_aware, datetime.datetime.now(cfg["timezone"]), cfg["locale"]
+    )
+
+
+def get_embed_or_url(url):
+    try:
+        result = PyEmbed.embed(url)
+    except pyembed.core.consumer.PyEmbedConsumerError:
+        result = url
+
+    return result
 
 # routing
 @app.route("/")
@@ -32,9 +54,8 @@ def index():
     page = flask.request.args.get(get_page_parameter(), type=int, default=1)
 
     if flask_login.current_user.is_authenticated:
-        already_read = (
-            db.session.query(ReadBy.postit_id)
-            .filter(ReadBy.user == flask_login.current_user)
+        already_read = db.session.query(ReadBy.postit_id).filter(
+            ReadBy.user == flask_login.current_user
         )
     else:
         already_read = db.session.query(ReadBy.postit_id).filter(sqlalchemy.sql.false())
@@ -59,17 +80,22 @@ def index():
     )
 
     return render_template(
-        "index.html", title="Frigo | Accueil", postits=content, pagination=pagination
+        "index.html",
+        title="Frigo | Accueil",
+        postits=content,
+        pagination=pagination,
+        time_ago=time_ago,
+        get_embed_or_url=get_embed_or_url,
     )
+
 
 @app.route("/bin")
 @login_required
 def bin():
     page = flask.request.args.get(get_page_parameter(), type=int, default=1)
 
-    already_read = (
-        db.session.query(ReadBy.postit_id)
-        .filter(ReadBy.user == flask_login.current_user)
+    already_read = db.session.query(ReadBy.postit_id).filter(
+        ReadBy.user == flask_login.current_user
     )
 
     content = (
@@ -95,6 +121,7 @@ def bin():
         "bin.html", title="Frigo | Corbeille", postits=content, pagination=pagination
     )
 
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if not flask_login.current_user.is_authenticated:
@@ -108,9 +135,7 @@ def signup():
 
             if not user:
                 new_user = User(
-                    form.nickname.data,
-                    form.password.data,
-                    form.nickname.data
+                    form.nickname.data, form.password.data, form.nickname.data
                 )
 
                 db.session.add(new_user)
@@ -118,9 +143,12 @@ def signup():
 
                 return flask.redirect(flask.url_for("login"))
 
-        return flask.render_template("signup.html", title="Frigo | Inscription", form=form)
+        return flask.render_template(
+            "signup.html", title="Frigo | Inscription", form=form
+        )
 
     return flask.redirect(flask.url_for("index"))
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -143,6 +171,7 @@ def login():
         return render_template("login.html", title="Frigo | Connexion", form=form)
 
     return flask.redirect(flask.url_for("index"))
+
 
 @app.route("/logout")
 @login_required
@@ -167,7 +196,7 @@ def new():
                 extracted.description,
                 extracted.image,
                 form.content.data,
-                flask_login.current_user
+                flask_login.current_user,
             )
             db.session.add(postit)
             db.session.commit()
@@ -178,14 +207,19 @@ def new():
 
     return render_template("new.html", title="Frigo | Nouveau post-it", form=form)
 
+
 @app.route("/throw/<postit_id>")
 @login_required
 def throw(postit_id):
     postit = db.session.query(Postit).get(postit_id)
 
-    already_read = db.session.query(ReadBy).filter(
-        and_(ReadBy.postit_id == postit_id, ReadBy.user == flask_login.current_user)
-    ).all()
+    already_read = (
+        db.session.query(ReadBy)
+        .filter(
+            and_(ReadBy.postit_id == postit_id, ReadBy.user == flask_login.current_user)
+        )
+        .all()
+    )
 
     if postit and not already_read:
         read_postit = ReadBy(postit=postit, user=flask_login.current_user)
