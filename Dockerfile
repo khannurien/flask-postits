@@ -1,36 +1,34 @@
-FROM ubuntu:bionic
+FROM python:3.7.3-alpine3.9 as base
 
-ARG DEBIAN_FRONTEND=noninteractive
+FROM base AS build
 
-ADD requirements.txt /tmp
+RUN apk add --update --no-cache \
+ g++ gcc libxslt-dev
 
-RUN set -xe \
- && apt-get update -q \
- && apt-get install -y -q \
-        python3-minimal \
-        python3-pip \
-        uwsgi-plugin-python3
+RUN mkdir /packages
+WORKDIR /packages
 
-RUN set -xe \
- && pip3 install --upgrade setuptools \
- && pip3 install -r /tmp/requirements.txt
+ADD requirements.txt /requirements.txt
 
-RUN set -xe \
- && apt-get remove -y python3-pip \
- && apt-get autoremove -y \
- && apt-get clean -y \
- && rm -rf /root/.cache \
- && rm -rf /var/lib/apt/lists/* \
- && mkdir -p /app \
- && useradd _uwsgi --no-create-home --user-group
+RUN python3.7 -m pip install -r /requirements.txt -t /packages
+
+FROM base
+
+RUN apk add --update --no-cache \
+ uwsgi uwsgi-python3
+
+RUN mkdir -p /app \
+ && addgroup _uwsgi \
+ && adduser -D --ingroup _uwsgi --no-create-home _uwsgi
 
 USER _uwsgi
 
 ADD --chown=_uwsgi:_uwsgi flask_postits /app
+COPY --from=build /packages /app
 
 VOLUME ["/app/db"]
 
-ENTRYPOINT ["/usr/bin/uwsgi", \
+ENTRYPOINT ["uwsgi", \
             "--master", \
             "--die-on-term", \
             "--plugin", "python3"]
