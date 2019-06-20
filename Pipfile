@@ -22,6 +22,7 @@ lxml = "*"
 requests = "*"
 timeago = "*"
 whitenoise = "*"
+uwsgi = "*"
 
 [requires]
 python_version = "3.6"
