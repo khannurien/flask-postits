@@ -13,7 +13,7 @@ class SignupForm(FlaskForm):
     name = StringField("Nom (optionnel)")
     password = PasswordField("Mot de passe", validators=[DataRequired(), EqualTo('password_confirm')])
     password_confirm = PasswordField("Mot de passe (confirmation)", validators=[DataRequired()])
-    submit = SubmitField("Connexion")
+    submit = SubmitField("Inscription")
 
 class NewPostitForm(FlaskForm):
     url = StringField("URL", validators=[DataRequired(), URL()])

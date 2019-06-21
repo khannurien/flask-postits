@@ -3,17 +3,33 @@
 {% block content %}
     <h1>Nouveau Post-it</h1>
 
-    <form action="" method="post" novalidate>
-        <div class="form-group">
-            {{ form.hidden_tag() }}
+    <form class="mt-4" action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
 
-            {{ form.url.label }}
-            {{ form.url(size=32) }}
+        <div class="form-row align-items-center">
+            <div class="col-sm-4">
+                {{ form.url.label(class_="sr-only") }}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">URL</div>
+                    </div>
+                    {{ form.url(class_="form-control", placeholder="https://") }}
+                </div>
+            </div>
 
-            {{ form.content.label }}
-            {{ form.content(size=32) }}
+            <div class="col-sm-6">
+                {{ form.content.label(class_="sr-only") }}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Petit mot</div>
+                    </div>
+                    {{ form.content(class_="form-control") }}
+                </div>
+            </div>
             
-            {{ form.submit() }}
+            <div class="col-auto">
+                {{ form.submit(class_="btn btn-primary") }}
+            </div>
         </div>
     </form>
 {% endblock %}
