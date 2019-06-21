@@ -47,8 +47,9 @@ Base = sqlalchemy.ext.declarative.declarative_base(metadata=meta)
 class User(Base):
     __tablename__ = "users"
 
-    def __init__(self, nick, password, name=None):
+    def __init__(self, nick, mail, password, name=None):
         self.user_nick = nick
+        self.user_mail = mail
         self.password = password
 
         if not name:
@@ -58,6 +59,7 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True)
     user_nick = Column(Text)
+    user_mail = Column(Text)
     user_name = Column(Text)
     user_pass = Column(Text)
 

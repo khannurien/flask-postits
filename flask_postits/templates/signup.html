@@ -20,6 +20,18 @@
 
         <div class="form-row">
             <div class="col-sm-4 my-1">
+                {{ form.mail.label(class_="sr-only") }}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">✉</div>
+                    </div>
+                    {{ form.mail(class_="form-control", placeholder="E-mail") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-4 my-1">
                 {{ form.password.label(class_="sr-only") }}
                 <div class="input-group">
                     <div class="input-group-prepend">

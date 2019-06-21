@@ -5,7 +5,9 @@
         {% for postit in postits %}
             <div class="card">
                 <a target="_blank" href="{{ postit.postit_url }}"></a>
-                <img class="card-img-top" src="{{ postit.postit_image }}" alt="Post-it #{{ postit.postit_id }}" />
+                {% if postit.postit_image %}
+                    <img class="card-img-top" src="{{ postit.postit_image }}" alt="Post-it #{{ postit.postit_id }}" />
+                {% endif %}
                 <div class="card-body" style="background-color: {{ postit.postit_color }} !important;">
                     <h2 class="card-title">{{ postit.postit_title }}</h2>
                     <p class="card-text card-desc"><em>{{ postit.postit_desc }}</em></p>

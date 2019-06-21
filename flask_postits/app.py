@@ -122,7 +122,7 @@ def signup():
 
             if not user:
                 new_user = User(
-                    form.nickname.data, form.password.data, form.nickname.data
+                    form.nickname.data, form.mail.data, form.password.data, form.nickname.data
                 )
 
                 db.session.add(new_user)
